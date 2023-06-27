@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificação de Erro de Interoperabilidade Disa SESP</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .header { background-color: #f44336; padding: 20px; text-align: center; color: white; }
+        .content { padding: 20px; }
+        .error-details { background-color: #f6f6f6; padding: 15px; margin-bottom: 15px; }
+        .footer { text-align: center; font-size: 12px; color: #888; }
+        #error { display: block; white-space: pre-wrap; text-align: left; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Notificação de Erro de Interoperabilidade Disa SESP</h1>
+        </div>
+        <div class="content">
+            <p>Houve um erro no sistema que bloqueou a sincronização de dados entre o servidor de integração e SESP. Por favor, encontre os detalhes abaixo para sua análise:</p>
+            <div class="error-details">
+                <p><strong>Data e hora:</strong><span th:text=${dateAndTime}></span></p>
+                <p><strong>Módulo:</strong>Serviço de Notificação Disa</p>
+                <p><strong>Descrição do erro:</strong></p>
+                <pre><span id="error" th:text=${errorDescription}></span></pre> 
+            </div>
+            <p>Para qualquer questão/dúvida por favor contacte ao <a href="https://helpdeskmoz.sis.org.mz/portal/pt/signin">Helpdesk</a> (Tel 82/86/84 - 8604886).</p>
+            <p>Atenciosamente,</p>
+        </div>
+        <div class="footer">
+            Esta é uma mensagem automática. Por favor, não responda a este e-mail.
+        </div>
+    </div>
+</body>
+</html>
