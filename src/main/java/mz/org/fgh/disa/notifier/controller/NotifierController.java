@@ -37,8 +37,6 @@ public class NotifierController {
 	public ResponseEntity<String> sendNotification(@RequestPart("data") JsonNode data,
 			@RequestParam(name = "attachment", required = false) MultipartFile file) throws IOException {
 		
-		System.out.println("json being received..." + data);
-		
 		if (data ==null) {
 			return ResponseEntity.badRequest().body("data parameter is required");
 		}
