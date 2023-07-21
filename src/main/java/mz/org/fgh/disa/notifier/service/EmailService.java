@@ -49,6 +49,9 @@ public class EmailService {
 
 		context.setVariable("dateAndTime", new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()));
 		context.setVariable("errorDescription", text);
+		context.setVariable("fromDate", startDate);
+		context.setVariable("toDate", endDate);
+
 				
 		if (module.equalsIgnoreCase("notification")) {
 			if (attachment==null) {
@@ -65,13 +68,13 @@ public class EmailService {
 		helper.setTo(to);
 		helper.setSubject(subject);
 		helper.setText(htmlTemplate, true);
-		helper.setFrom(fromEmail, "[DISA_SESP]");
+		helper.setFrom(fromEmail, "[Disa-SESP Interop.]"); 
 		
 		if (attachment !=null) {
 			ByteArrayResource attachmentResource = new ByteArrayResource(attachment);
 			helper.addAttachment(attachmentName, attachmentResource);
 		}
 		
-		javaMailSender.send(message);      
+		javaMailSender.send(message);       
 	}
 }
