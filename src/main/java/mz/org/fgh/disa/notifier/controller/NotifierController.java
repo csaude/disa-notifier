@@ -18,53 +18,58 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.mail.MessagingException;
+import lombok.extern.log4j.Log4j2;
 import mz.org.fgh.disa.notifier.service.EmailService;
 
 @RestController
-@RequestMapping("notification") 
+@RequestMapping("notification")
+@Log4j2
 public class NotifierController {
-	
+
 	private EmailService emailService;
-	
-	private String attachmentName;
-	
+
 	@Autowired
 	public NotifierController(EmailService emailService) {
 		this.emailService = emailService;
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<String> sendNotification(@RequestPart("data") JsonNode data,
-			@RequestParam(name = "attachment", required = false) MultipartFile file) throws IOException {
-		
-		if (data ==null) {
+			@RequestParam(name = "attachment", required = false) MultipartFile file) {
+
+		log.debug("json being received..." + data);
+
+		if (data == null) {
 			return ResponseEntity.badRequest().body("data parameter is required");
 		}
-		
+
 		try {
+			String attachmentName = "";
+
 			ObjectMapper objectMapper = new ObjectMapper();
 			String[] to = objectMapper.convertValue(data.get("to"), String[].class);
 			String subject = objectMapper.convertValue(data.get("subject"), String.class);
-			String body = objectMapper.convertValue(data.get("body"), String.class); 
+			String body = objectMapper.convertValue(data.get("body"), String.class);
 			String module = objectMapper.convertValue(data.get("module"), String.class);
 			String startDate = objectMapper.convertValue(data.get("startDate"), String.class);
 			String endDate = objectMapper.convertValue(data.get("endDate"), String.class);
-			
+
 			byte[] attachment = null;
-			
-			if (file !=null && !file.isEmpty()) {
-				attachmentName = file.getOriginalFilename(); 
-				try(InputStream inputStream = file.getInputStream()){
+
+			if (file != null && !file.isEmpty()) {
+				attachmentName = file.getOriginalFilename();
+				try (InputStream inputStream = file.getInputStream()) {
 					attachment = IOUtils.toByteArray(inputStream);
 				}
 			}
-			
-			emailService.sendEmail(to,subject,body,attachment,attachmentName, module, startDate, endDate);
-			
-            return ResponseEntity.ok("Email sent successfully.");
-        } catch (MessagingException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            					 .body("Failed to send email.");
-        }  
+
+			emailService.sendEmail(to, subject, body, attachment, attachmentName, module, startDate, endDate);
+
+			return ResponseEntity.ok("Email sent successfully.");
+		} catch (IOException | MessagingException e) {
+			log.error(e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body("Failed to send email.");
+		}
 	}
 }
