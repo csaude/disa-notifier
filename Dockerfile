@@ -5,12 +5,12 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /opt/app
 
 # Copy the JAR file to the container
-COPY target/disa-notifier-0.0.1-SNAPSHOT.jar /opt/app
+COPY target/disa-notifier-1.0.0.jar /opt/app
 
 # Expose the port that your application is running on
 EXPOSE 8571
 
 # Start the application
-CMD ["java", "-jar", "disa-notifier-0.0.1-SNAPSHOT.jar"]
-#CMD ["java", "-agentlib:jdwp=transport=dt_socket,address=*:8000,server=y,suspend=n", "-jar", "disa-notifier-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "disa-notifier-1.0.0.jar"]
+#CMD ["java", "-agentlib:jdwp=transport=dt_socket,address=*:8000,server=y,suspend=n", "-jar", "disa-notifier-1.0.0.jar"]
 
