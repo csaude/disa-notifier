@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.AddressException;
 import lombok.extern.log4j.Log4j2;
 import mz.org.fgh.disa.notifier.service.EmailService;
 
@@ -66,6 +67,9 @@ public class NotifierController {
 			emailService.sendEmail(to, subject, body, attachment, attachmentName, module, startDate, endDate);
 
 			return ResponseEntity.ok("Email sent successfully.");
+		} catch (AddressException e) {
+			log.info("Bad address: {} {}", data.get("to"), e.getMessage());
+			return ResponseEntity.badRequest().body(e.getMessage());
 		} catch (IOException | MessagingException e) {
 			log.error(e);
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
