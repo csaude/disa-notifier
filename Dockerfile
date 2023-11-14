@@ -1,6 +1,8 @@
 # Set the base image to use
 FROM eclipse-temurin:17-jre-alpine
 
+RUN ln -s /usr/share/zoneinfo/Africa/Maputo /etc/localtime
+
 # Set the working directory
 WORKDIR /opt/app
 
