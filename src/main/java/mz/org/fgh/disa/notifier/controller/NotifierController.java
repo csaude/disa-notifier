@@ -54,6 +54,7 @@ public class NotifierController {
 			String module = objectMapper.convertValue(data.get("module"), String.class);
 			String startDate = objectMapper.convertValue(data.get("startDate"), String.class);
 			String endDate = objectMapper.convertValue(data.get("endDate"), String.class);
+			String repoLink = objectMapper.convertValue(data.get("repoLink"), String.class);
 
 			byte[] attachment = null;
 
@@ -64,7 +65,7 @@ public class NotifierController {
 				}
 			}
 
-			emailService.sendEmail(to, subject, body, attachment, attachmentName, module, startDate, endDate);
+			emailService.sendEmail(to, subject, body, attachment, attachmentName, module, startDate, endDate, repoLink); 
 
 			return ResponseEntity.ok("Email sent successfully.");
 		} catch (AddressException e) {

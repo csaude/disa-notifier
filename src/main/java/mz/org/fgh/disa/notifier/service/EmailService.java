@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -37,12 +36,13 @@ public class EmailService {
 	
 	public void sendEmail(String[] to, String subject, 
 			  			  String text,
-			  			  byte[] attachment, String attachmentName, String module, String startDate, String endDate) throws MessagingException, IOException {
+			  			  byte[] attachment, String attachmentName, String module, String startDate, String endDate, String repoLink) throws MessagingException, IOException {
 		
 		Objects.requireNonNull(to, "email recipient must not be null");
 		Objects.requireNonNull(subject, "email subject must not be null");
 		Objects.requireNonNull(text, "email content must not be null");
 		Objects.requireNonNull(module, "module calling the service must not be null");
+		Objects.requireNonNull(repoLink, "repoLink must not be null");
 		
 		Context context = new Context();
 		templateEngine = TemplateEngineUtils.getTemplateEngine();
@@ -51,6 +51,7 @@ public class EmailService {
 		context.setVariable("errorDescription", text);
 		context.setVariable("fromDate", startDate);
 		context.setVariable("toDate", endDate);
+		context.setVariable("repoLink", repoLink);
 
 				
 		if (module.equalsIgnoreCase("notification")) {
@@ -68,12 +69,12 @@ public class EmailService {
 		helper.setTo(to);
 		helper.setSubject(subject);
 		helper.setText(htmlTemplate, true);
-		helper.setFrom(fromEmail, "[Disa-SESP Interop.]"); 
+		helper.setFrom(fromEmail, "[Disa-SESP Interop.]");
 		
-		if (attachment !=null) {
+		/*if (attachment !=null) {
 			ByteArrayResource attachmentResource = new ByteArrayResource(attachment);
 			helper.addAttachment(attachmentName, attachmentResource);
-		}
+		}*/
 		
 		javaMailSender.send(message);       
 	}
