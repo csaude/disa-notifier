@@ -38,8 +38,8 @@ public class NotifierControllerTest {
         emails.add("emailShouldBeSeparatedByColon@example.com;secondEmail@example.com");
         root.set("to", emails);
         doThrow(AddressException.class).when(emailService).sendEmail(any(), any(), any(),
-                any(), any(), any(), any(), any(), any());
-        ResponseEntity<String> sendNotification = notifierController.sendNotification(root, null);
+                any(), any(), any(), any(), any());
+        ResponseEntity<String> sendNotification = notifierController.sendNotification(root);
         assertThat(sendNotification.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }

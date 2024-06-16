@@ -19,7 +19,7 @@ public class EmailServiceTest {
         assertThrows(AddressException.class, () -> {
             String[] to = new String[] { "emailShouldBeSeparatedByColon@example.com;secondEmail@example.com" };
             emailService.sendEmail(to,
-                    "", "", null, null, "", "", "", "");
+                    "", "", null, null, "", "", null);
         });
     }
 }

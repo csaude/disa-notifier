@@ -1,18 +1,14 @@
 package mz.org.fgh.disa.notifier.controller;
 
 import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,8 +31,7 @@ public class NotifierController {
 	}
 
 	@PostMapping
-	public ResponseEntity<String> sendNotification(@RequestPart("data") JsonNode data,
-			@RequestParam(name = "attachment", required = false) MultipartFile file) {
+	public ResponseEntity<String> sendNotification(@RequestPart("data") JsonNode data) {
 
 		log.debug("json being received..." + data);
 
@@ -45,31 +40,21 @@ public class NotifierController {
 		}
 
 		try {
-			String attachmentName = "";
-
 			ObjectMapper objectMapper = new ObjectMapper();
-			String[] to = objectMapper.convertValue(data.get("to"), String[].class);
+			String[] recipient = objectMapper.convertValue(data.get("to"), String[].class);
 			String subject = objectMapper.convertValue(data.get("subject"), String.class);
 			String body = objectMapper.convertValue(data.get("body"), String.class);
 			String module = objectMapper.convertValue(data.get("module"), String.class);
 			String startDate = objectMapper.convertValue(data.get("startDate"), String.class);
 			String endDate = objectMapper.convertValue(data.get("endDate"), String.class);
 			String repoLink = objectMapper.convertValue(data.get("repoLink"), String.class);
+			Boolean resultFlag = objectMapper.convertValue(data.get("resultFlag"), Boolean.class);
 
-			byte[] attachment = null;
-
-			if (file != null && !file.isEmpty()) {
-				attachmentName = file.getOriginalFilename();
-				try (InputStream inputStream = file.getInputStream()) {
-					attachment = IOUtils.toByteArray(inputStream);
-				}
-			}
-
-			emailService.sendEmail(to, subject, body, attachment, attachmentName, module, startDate, endDate, repoLink); 
+			emailService.sendEmail(recipient, subject, body, module, startDate, endDate, repoLink, resultFlag); 
 
 			return ResponseEntity.ok("Email sent successfully.");
 		} catch (AddressException e) {
-			log.info("Bad address: {} {}", data.get("to"), e.getMessage());
+			log.info("Bad address: {} {}", data.get("recipient"), e.getMessage());
 			return ResponseEntity.badRequest().body(e.getMessage());
 		} catch (IOException | MessagingException e) {
 			log.error(e);
