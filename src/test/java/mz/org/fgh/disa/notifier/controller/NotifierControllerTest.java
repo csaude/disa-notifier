@@ -2,7 +2,6 @@ package mz.org.fgh.disa.notifier.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 
 import java.io.IOException;
@@ -40,7 +39,7 @@ public class NotifierControllerTest {
         root.set("to", emails);
         doThrow(AddressException.class).when(emailService).sendEmail(any(), any(), any(),
                 any(), any(), any(), any(), any());
-        ResponseEntity<String> sendNotification = notifierController.sendNotification(root, null);
+        ResponseEntity<String> sendNotification = notifierController.sendNotification(root);
         assertThat(sendNotification.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 }
