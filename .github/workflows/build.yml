@@ -33,6 +33,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: |
-            disa-notifier/target/*.jar
+            target/*.jar
           name: disa-notifier-${{ env.VERSION }}-${{ env.COMMIT_SHA }}
           compression-level: 0
