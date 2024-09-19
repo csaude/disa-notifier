@@ -17,6 +17,9 @@
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+	<scm>
+		<developerConnection>scm:git:git@github.com:csaude/disa-notifier.git</developerConnection>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,6 +90,14 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>3.1.1</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
-
 </project>
