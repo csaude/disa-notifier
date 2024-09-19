@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>mz.org.fgh</groupId>
 	<artifactId>disa-notifier</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5-SNAPSHOT</version>
 	<name>disa-notifier</name>
 	<description>Notify Disa-Sesp Interoperability end users</description>
 	<properties>
@@ -17,7 +17,7 @@
 	</properties>
 	<scm>
 		<developerConnection>scm:git:git@github.com:csaude/disa-notifier.git</developerConnection>
-	  <tag>1.0.4</tag>
+	  <tag>HEAD</tag>
   </scm>
 	<dependencies>
 		<dependency>
